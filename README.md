@@ -153,7 +153,7 @@ See nges-sample-tic-tac-toe for a complete web application based on the NGES.
 
 In order to build the project:
 
-1. Install PostgreSQL and create a new database.
+1. Install PostgreSQL and create a new database (for integration tests).
 2. Copy config/SAMPLEapplication.properties to config/application.properties and adjust it to match your
 setup.
 3. Run Gradle build task.
