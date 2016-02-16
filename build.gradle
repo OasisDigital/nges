@@ -1,0 +1,81 @@
+plugins {
+    id "org.flywaydb.flyway" version "3.2"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+group = 'com.oasisdigital'
+version = '0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:18.0'
+    compile 'org.jgroups:jgroups:3.6.1.Final'
+    compile 'org.slf4j:slf4j-api:1.7.12'
+
+    testCompile 'org.hamcrest:hamcrest-core:1.3'    
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.testng:testng:6.9.6'
+    testCompile 'org.postgresql:postgresql:9.4-1202-jdbc42'
+    testCompile 'com.jayway.awaitility:awaitility:1.6.2'
+}
+
+project.gradle.taskGraph.whenReady { graph ->
+    def hasFlyway = graph.allTasks.any { it.name.startsWith("flyway") };
+    if(hasFlyway) {
+        loadProperties();
+        flyway.locations = ["filesystem:db_schema"] // Relative to root project
+        flyway.url = "jdbc:postgresql://${project['db.server']}:${project['db.port']}/${project['db.database']}"
+        flyway.user = project['db.user']
+        flyway.password = project['db.password']
+
+        // https://github.com/flyway/flyway/issues/775
+        flywayClean.dependsOn -= testClasses
+        flywayMigrate.dependsOn = [processResources, processTestResources]
+        flywayMigrate.mustRunAfter = [flywayClean]
+    } else {
+        logger.info("Skipping Flyway setup")
+    }
+}
+
+def loadProperties() {
+    def filePath = 'config/application.properties';
+    def file = project.file(filePath);
+    if (file.exists()) {
+        logger.info("Reading properties from $filePath")
+        file.withInputStream { stream ->
+            java.util.Properties props = new java.util.Properties()
+            props.load(stream)
+            props.each { k, v -> project.ext.set(k, v) }
+        }
+    } else {
+        throw new IllegalStateException("$filePath not found, aborting");
+    }
+}
+
+test {
+    useTestNG {
+        excludeGroups 'integration'
+    }
+}
+
+task(type: Test, 'integrationTest') {
+    dependsOn = ['flywayMigrate']
+    shouldRunAfter = ['test']
+    useTestNG {
+        includeGroups 'integration'
+    }
+
+    reports {
+        junitXml.destination = "build/reports/integration_tests"
+        html.destination = "build/reports/integration_tests"
+    }
+}
+
+check.dependsOn integrationTest
