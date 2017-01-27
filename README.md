@@ -166,3 +166,20 @@ with Gradle.
 
 In order to install the project to your local Maven repository for use with other projects, run the Gradle
 install task.
+
+## Should I use this?
+
+We built the library to support a very complex project; it has its own
+suite of tests, and is also been validated thoroughly by that
+applications tests. It suits our needs there, operating as a library
+rather than as another service to be managed. We believe it is of
+good quality, and has some very worthwhile technical merits.
+
+With that in mind, if you are looking for a production proven event
+store with more features, support services available, etc., then we
+recommend the popular "Event Store", also sometimes called "Greg's Event
+Store", named after Greg Young who is done so much to popularize the
+merit of event sourcing:
+
+https://geteventstore.com/
+
