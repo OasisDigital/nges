@@ -142,8 +142,9 @@ NGES uses the following database schema:
 
 ## Additional Resources
 
-* [Linear Event Store](http://blog.oasisdigital.com/2015/cqrs-linear-event-store/) - post on Oasis Digital
-blog describing benefits of using a simple, linear event store like this one.
+* [Linear Event Store](http://blog.oasisdigital.com/2015/cqrs-linear-event-store/),
+   a post on the Oasis Digital blog describing benefits of using a
+   linear event store like this one.
 
 ## Demo
 
@@ -154,8 +155,8 @@ See nges-sample-tic-tac-toe for a complete web application based on the NGES.
 In order to build the project:
 
 1. Install PostgreSQL and create a new database (for integration tests).
-2. Copy config/SAMPLEapplication.properties to config/application.properties and adjust it to match your
-setup.
+2. Copy config/SAMPLE.application.properties to config/application.properties
+   and adjust it to match your setup.
 3. Run Gradle build task.
 
 The schema can be found in db_schema directory. The build process applies it with Flyway using the
