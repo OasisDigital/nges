@@ -17,7 +17,7 @@ public class EventStoreStatusPublisher {
         this.messageGroup = messageGroup;
     }
 
-    public void publishLastEventIfChanged(long eventId) {
+    public synchronized void publishLastEventIfChanged(long eventId) {
         // It's OK to repeat the message (once could be lost, or a listener might join late), but the clock
         // cannot go backwards.
         if (lastEventId <= eventId) {
