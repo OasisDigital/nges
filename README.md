@@ -1,5 +1,7 @@
 # NGES - "Next Generation Event Store"
 
+[![Build Status](https://travis-ci.org/OasisDigital/nges.svg?branch=master)](https://travis-ci.org/OasisDigital/nges)
+
 Copyright 2015-2016 Oasis Digital Solutions Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
